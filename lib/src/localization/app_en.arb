@@ -1,0 +1,6 @@
+{
+  "appTitle": "episode_box",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
