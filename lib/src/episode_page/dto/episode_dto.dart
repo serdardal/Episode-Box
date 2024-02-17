@@ -1,7 +1,15 @@
-class EpisodeDto {
-  final String name;
-  final int? season;
-  final int episode;
+import 'package:mongo_dart/mongo_dart.dart';
 
-  const EpisodeDto(this.name, this.season, this.episode);
+class EpisodeDto {
+  final ObjectId id;
+  final String name;
+  int? season;
+  int episode;
+  bool isUpdated = false;
+
+  EpisodeDto(this.id, this.name, this.season, this.episode);
+
+  void updated() {
+    isUpdated = true;
+  }
 }

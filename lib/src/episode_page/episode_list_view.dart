@@ -1,25 +1,92 @@
+import 'package:episode_box/src/data/data_provider.dart';
+import 'package:episode_box/src/episode_page/episode_list_item.dart';
 import 'package:episode_box/src/settings/settings_view.dart';
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:mongo_dart/mongo_dart.dart' as mongo;
 
 import 'dto/episode_dto.dart';
 
-class EpisodeListView extends StatelessWidget {
-  const EpisodeListView(
-      {super.key,
-      this.episodeItems = const [
-        EpisodeDto('SpongeBob', null, 10),
-        EpisodeDto('X-Files', 5, 2)
-      ]});
+class EpisodeListView extends StatefulWidget {
+  const EpisodeListView({
+    super.key,
+  });
 
   static const routeName = '/episodes';
-  final List<EpisodeDto> episodeItems;
+
+  @override
+  State<StatefulWidget> createState() => _EpisodeListView();
+}
+
+class _EpisodeListView extends State<EpisodeListView> {
+  List<EpisodeDto> episodes = [];
+
+  Future getAllEpisodes() async {
+    context.loaderOverlay.show();
+    var data = await DataProvider.getAllData();
+
+    setState(() {
+      episodes = data;
+    });
+
+    if (!context.mounted) return;
+    context.loaderOverlay.hide();
+  }
+
+  void updateItem(mongo.ObjectId id, int? season, int episode) {
+    var updatedItems = episodes.where((element) => element.id == id);
+
+    if (updatedItems.isEmpty) return;
+
+    var updatedItem = updatedItems.first;
+
+    updatedItem.season = season;
+    updatedItem.episode = episode;
+    updatedItem.updated();
+
+    setState(() {
+      episodes = [...episodes];
+    });
+  }
+
+  Future saveUpdatedItems() async {
+    var updatedItems = episodes.where((element) => element.isUpdated).toList();
+    if (updatedItems.isEmpty) return;
+
+    context.loaderOverlay.show();
+
+    await DataProvider.updateItems(updatedItems);
+
+    getAllEpisodes();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getAllEpisodes();
+  }
 
   @override
   Widget build(BuildContext context) {
+    var hasUpdatedItems = episodes.any((element) => element.isUpdated);
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Episodes'),
           actions: [
+            IconButton(
+                onPressed: () {
+                  saveUpdatedItems();
+                },
+                icon: Icon(
+                  Icons.save,
+                  color: hasUpdatedItems ? Colors.yellow : null,
+                )),
+            IconButton(
+                onPressed: () {
+                  getAllEpisodes();
+                },
+                icon: const Icon(Icons.refresh)),
             IconButton(
                 onPressed: () {
                   Navigator.restorablePushNamed(
@@ -31,20 +98,11 @@ class EpisodeListView extends StatelessWidget {
         ),
         body: ListView.builder(
             restorationId: 'episodeList',
-            itemCount: episodeItems.length,
+            itemCount: episodes.length,
             itemBuilder: (BuildContext context, int index) {
-              final item = episodeItems[index];
+              final item = episodes[index];
 
-              return ListTile(
-                title: Text(item.name),
-                subtitle: Text(
-                    '${item.season != null ? 'S: ${item.season.toString()}\n' : ''}E: ${item.episode}'),
-                shape: Border(
-                  top:
-                      index == 0 ? const BorderSide(width: 2) : BorderSide.none,
-                  bottom: const BorderSide(width: 2),
-                ),
-              );
+              return EpisodeListItem(item, updateItem, index == 0);
             }));
   }
 }
