@@ -28,7 +28,7 @@ class DataProvider {
       EpisodeDto(e[EpisodeField.id], e[EpisodeField.name],
           e[EpisodeField.season], e[EpisodeField.episode]);
 
-  static dynamic _mapEpisodeDtoToEpisodeRecord(EpisodeDto e) => {
+  static Map<String, dynamic> _mapEpisodeDtoToEpisodeRecord(EpisodeDto e) => {
         EpisodeField.id: e.id,
         EpisodeField.name: e.name,
         EpisodeField.season: e.season,
