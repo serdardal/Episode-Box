@@ -57,6 +57,14 @@ class _EpisodeListView extends State<EpisodeListView> {
 
     await DataProvider.updateItems(updatedItems);
 
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Episodes saved successfully."),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 1),
+    ));
+
     getAllEpisodes();
   }
 
