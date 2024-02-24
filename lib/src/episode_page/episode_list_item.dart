@@ -35,7 +35,10 @@ class EpisodeListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(episodeDto.name),
+      title: Text(
+        episodeDto.name,
+        style: Theme.of(context).textTheme.titleMedium,
+      ),
       subtitle: Column(
         children: [
           Visibility(

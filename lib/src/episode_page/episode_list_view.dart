@@ -80,7 +80,10 @@ class _EpisodeListView extends State<EpisodeListView> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Episodes'),
+          title: Text(
+            'Episodes',
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
           actions: [
             IconButton(
                 onPressed: () {
@@ -102,7 +105,7 @@ class _EpisodeListView extends State<EpisodeListView> {
                 },
                 icon: const Icon(Icons.settings))
           ],
-          backgroundColor: Colors.lightBlueAccent,
+          backgroundColor: Theme.of(context).primaryColorDark,
         ),
         body: ListView.builder(
             restorationId: 'episodeList',
