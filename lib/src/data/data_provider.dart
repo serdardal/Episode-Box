@@ -1,5 +1,5 @@
 import 'package:episode_box/src/data/episode_record.dart';
-import 'package:episode_box/src/episode_page/dto/episode_dto.dart';
+import 'package:episode_box/src/pages/episode_page/dto/episode_dto.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 

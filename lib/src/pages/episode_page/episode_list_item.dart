@@ -1,4 +1,4 @@
-import 'package:episode_box/src/episode_page/dto/episode_dto.dart';
+import 'package:episode_box/src/pages/episode_page/dto/episode_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:mongo_dart/mongo_dart.dart';
 

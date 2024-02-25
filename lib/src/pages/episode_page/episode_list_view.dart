@@ -1,6 +1,7 @@
 import 'package:episode_box/src/data/data_provider.dart';
-import 'package:episode_box/src/episode_page/episode_list_item.dart';
-import 'package:episode_box/src/settings/settings_view.dart';
+import 'package:episode_box/src/pages/add_new_page/add_new_view.dart';
+import 'package:episode_box/src/pages/episode_page/episode_list_item.dart';
+import 'package:episode_box/src/pages/settings_page/settings_view.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:mongo_dart/mongo_dart.dart' as mongo;
@@ -114,6 +115,18 @@ class _EpisodeListView extends State<EpisodeListView> {
               final item = episodes[index];
 
               return EpisodeListItem(item, updateItem, index == 0);
-            }));
+            }),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () async {
+              // AddNewView returns true if new item added.
+              var refreshRequired = await Navigator.pushNamed<bool?>(
+                  context, AddNewView.routeName);
+
+              // refetch list when new item added.
+              if (refreshRequired != null && refreshRequired) {
+                getAllEpisodes();
+              }
+            },
+            child: const Icon(Icons.add)));
   }
 }
