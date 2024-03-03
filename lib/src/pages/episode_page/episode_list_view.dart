@@ -61,7 +61,7 @@ class _EpisodeListView extends State<EpisodeListView> {
     if (!context.mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text("Episodes saved successfully."),
+      content: Text("Changes saved successfully."),
       backgroundColor: Colors.green,
       duration: Duration(seconds: 1),
     ));

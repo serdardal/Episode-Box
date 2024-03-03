@@ -42,9 +42,19 @@ class DataProvider {
     var coll = db.collection('Episode');
 
     for (var element in updatedItems) {
-      coll.update(where.eq(EpisodeField.id, element.id),
+      await coll.update(where.eq(EpisodeField.id, element.id),
           _mapEpisodeDtoToEpisodeRecord(element));
     }
+
+    await db.close();
+  }
+
+  static Future addItem(EpisodeDto newItem) async {
+    var db = await _connect();
+    await db.open();
+
+    var coll = db.collection('Episode');
+    await coll.insert(_mapEpisodeDtoToEpisodeRecord(newItem));
 
     await db.close();
   }
