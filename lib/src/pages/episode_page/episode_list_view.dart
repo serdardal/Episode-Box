@@ -124,14 +124,18 @@ class _EpisodeListView extends State<EpisodeListView> {
           ],
           backgroundColor: Theme.of(context).primaryColorDark,
         ),
-        body: ListView.builder(
-            restorationId: 'episodeList',
-            itemCount: episodes.length,
-            itemBuilder: (BuildContext context, int index) {
-              final item = episodes[index];
+        body: RefreshIndicator(
+          onRefresh: getAllEpisodes,
+          child: ListView.builder(
+              restorationId: 'episodeList',
+              itemCount: episodes.length,
+              itemBuilder: (BuildContext context, int index) {
+                final item = episodes[index];
 
-              return EpisodeListItem(item, updateItem, deleteItem, index == 0);
-            }),
+                return EpisodeListItem(
+                    item, updateItem, deleteItem, index == 0);
+              }),
+        ),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
               // AddNewView returns true if new item added.
