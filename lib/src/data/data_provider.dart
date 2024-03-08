@@ -58,4 +58,14 @@ class DataProvider {
 
     await db.close();
   }
+
+  static Future deleteItem(ObjectId id) async {
+    var db = await _connect();
+    await db.open();
+
+    var coll = db.collection('Episode');
+    await coll.deleteOne(where.eq(EpisodeField.id, id));
+
+    await db.close();
+  }
 }

@@ -69,6 +69,22 @@ class _EpisodeListView extends State<EpisodeListView> {
     getAllEpisodes();
   }
 
+  Future deleteItem(mongo.ObjectId id) async {
+    context.loaderOverlay.show();
+
+    await DataProvider.deleteItem(id);
+
+    if (!context.mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text("Item deleted successfully."),
+      backgroundColor: Colors.green,
+      duration: Duration(seconds: 1),
+    ));
+
+    getAllEpisodes();
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,7 +130,7 @@ class _EpisodeListView extends State<EpisodeListView> {
             itemBuilder: (BuildContext context, int index) {
               final item = episodes[index];
 
-              return EpisodeListItem(item, updateItem, index == 0);
+              return EpisodeListItem(item, updateItem, deleteItem, index == 0);
             }),
         floatingActionButton: FloatingActionButton(
             onPressed: () async {
