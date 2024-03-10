@@ -6,10 +6,12 @@ class EpisodeDto {
   int? season;
   int episode;
   bool isUpdated = false;
+  DateTime updatedDate;
 
-  EpisodeDto(this.id, this.name, this.season, this.episode);
+  EpisodeDto(this.id, this.name, this.season, this.episode, this.updatedDate);
 
   void updated() {
     isUpdated = true;
+    updatedDate = DateTime.now();
   }
 }

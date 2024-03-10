@@ -42,7 +42,8 @@ class _AddNewView extends State<AddNewView> {
         mongo.ObjectId(),
         itemNameController.text,
         int.tryParse(seasonController.text),
-        int.tryParse(episodeController.text) ?? 1);
+        int.tryParse(episodeController.text) ?? 1,
+        DateTime.now());
 
     await DataProvider.addItem(newItem);
 

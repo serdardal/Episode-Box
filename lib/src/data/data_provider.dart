@@ -17,7 +17,10 @@ class DataProvider {
 
     var coll = db.collection('Episode');
 
-    var episodeRecords = await coll.find().toList();
+    var episodeRecords = await coll
+        .find(SelectorBuilder()
+            .sortBy(EpisodeField.updatedDate, descending: true))
+        .toList();
 
     await db.close();
 
@@ -25,14 +28,19 @@ class DataProvider {
   }
 
   static EpisodeDto _mapEpisodeRecordToEpisodeDto(Map<String, dynamic> e) =>
-      EpisodeDto(e[EpisodeField.id], e[EpisodeField.name],
-          e[EpisodeField.season], e[EpisodeField.episode]);
+      EpisodeDto(
+          e[EpisodeField.id],
+          e[EpisodeField.name],
+          e[EpisodeField.season],
+          e[EpisodeField.episode],
+          e[EpisodeField.updatedDate]);
 
   static Map<String, dynamic> _mapEpisodeDtoToEpisodeRecord(EpisodeDto e) => {
         EpisodeField.id: e.id,
         EpisodeField.name: e.name,
         EpisodeField.season: e.season,
-        EpisodeField.episode: e.episode
+        EpisodeField.episode: e.episode,
+        EpisodeField.updatedDate: e.updatedDate
       };
 
   static Future updateItems(List<EpisodeDto> updatedItems) async {
